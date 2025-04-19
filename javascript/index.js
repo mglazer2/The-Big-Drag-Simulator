@@ -9690,14 +9690,19 @@ function loadAdditionalQueensFromCSV(path, callback) {
 
 /////
 // Load CSV-based queens after hardcoded ones are added
-loadAdditionalQueensFromCSV("contestants.csv", function() {
-    // Once everything is loaded, start the simulation
-    startSimulation(); // replace with your actual entry point
-});
+//loadAdditionalQueensFromCSV("contestants.csv", function() {
+//    // Once everything is loaded, start the simulation
+//    startSimulation(); // replace with your actual entry point
+//});
 
 ////
 
+loadAdditionalQueensFromCSV("contestants.csv", function() {
+    console.log(`👑 Total queens in simulation: ${allQueens.length}`);
+    console.table(allQueens.map(q => ({ Name: q.name, Short: q.shortName })));
 
+//    startSimulation(); // or whatever your entry function is
+});
 
 ///
 
