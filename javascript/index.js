@@ -9697,12 +9697,18 @@ function loadAdditionalQueensFromCSV(path, callback) {
 
 ////
 
-loadAdditionalQueensFromCSV("contestants.csv", function() {
-    console.log(`👑 Total queens in simulation: ${allQueens.length}`);
-    console.table(allQueens.map(q => ({ Name: q.name, Short: q.shortName })));
+ loadAdditionalQueensFromCSV("contestants.csv", function() {
+     console.log(`👑 Total queens in simulation: ${allQueens.length}`);
+     console.table(allQueens.map(q => ({ Name: q.name, Short: q.shortName })));
 
-//    startSimulation(); // or whatever your entry function is
-});
+ //    startSimulation(); // or whatever your entry function is
+ });
+
+///
+
+// .catch(err => {
+//     console.error("❌ Error loading contestants.csv:", err);
+// });
 
 ///
 
