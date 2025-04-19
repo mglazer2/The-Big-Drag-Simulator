@@ -9684,7 +9684,7 @@ function loadAdditionalQueensFromCSV(path, callback) {
             console.error("Failed to load CSV queens:", err);
             if (callback) callback(); // still run callback even if CSV fails
         });
-        console.log(`✅ Loaded ${results.data.length} queens from contestants.csv`);
+//        console.log(`✅ Loaded ${results.data.length} queens from contestants.csv`);
 
 }
 
