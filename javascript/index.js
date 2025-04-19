@@ -916,7 +916,7 @@ class GirlGroup {
             desc1[desc1["Can I Get An Amen?"] = 19] = "Can I Get An Amen?";
             desc1[desc1["Oh No She Betta Don't!"] = 20] = "Oh No She Betta Don't!";
         })(desc1 || (desc1 = {}));
-        description.innerHTML = "This week, the queens will headline the YASStombery festival in girl groups with the new hit song " + desc1[randomNumber(0, 20)] + ".";
+        description.innerHTML = "This week, the queens will headline the YASStombery festival in girl groups with the new hit song " + desc1[randomNumber(0, 100)] + ".";
     }
     rankPerformances() {
         for (let i = 0; i < currentCast.length; i++)
@@ -1628,7 +1628,7 @@ function createChallenge(challenges, miniChallengeScreen) {
     else if (totalCastSize >= 12 && (currentCast.length == 8 || currentCast.length == 9) && !girlGroupCounter && randomNumber(0, 100) >= 50 || totalCastSize < 12 && currentCast.length == 6 && !girlGroupCounter && !kittyGirlGroup && randomNumber(0, 100) >= 50)
         miniChallengeScreen.createButton("Proceed", "girlgroup()");
     //rusical
-    else if (totalCastSize >= 12 && (currentCast.length == 11 || currentCast.length == 9) && !rusicalCounter && randomNumber(0, 100) >= 50 || totalCastSize < 12 && currentCast.length == 7 && !rusicalCounter  && randomNumber(0, 100) >= 50 || currentCast.length > 5 && randomNumber(0, 20) >= 19 && team && !rusicalCounter)
+    else if (totalCastSize >= 12 && (currentCast.length == 11 || currentCast.length == 9) && !rusicalCounter && randomNumber(0, 100) >= 50 || totalCastSize < 12 && currentCast.length == 7 && !rusicalCounter  && randomNumber(0, 100) >= 50 || currentCast.length > 5 && randomNumber(0, 100) >= 19 && team && !rusicalCounter)
         miniChallengeScreen.createButton("Proceed", "rusical()");
     //makeover
     else if (currentCast.length == 6 && (lftc || canFinale || teamsF || top4 || top5 || allstars3Finale) && !makeoverCounter && !team  && (regularFormat || thailandFormat) || currentCast.length == 5 && top3 && !makeoverCounter)
@@ -5027,8 +5027,8 @@ function generateSpace() {
     castSelection.innerHTML = '';
     if (totalCastSize < 5)
         window.alert("Please, use at least 5 queens on your cast!");
-    else if (totalCastSize > 20)
-        window.alert("Please, use less than 20 queens in your cast!");
+    else if (totalCastSize > 100)
+        window.alert("Please, use less than 100 queens in your cast!");
     else
         for (let i = 0; i < castSize; i++) {
             let select = document.createElement("select");
@@ -9652,6 +9652,49 @@ let allQueens = [
     pangina, mollyOFD, kaosOFD, jinkxOFD, hannahOFD, vanityOFD, ellaOFD, briocheeOFD, victoriaOFD, arizona, astrid, bernie, katkat, dee, hana, m1ss, matilduh, pardaux, ovcunt, tiny, veruschka
     
 ].concat(allCustomQueens).sort((a, b) => a.getName().toLowerCase().localeCompare(b.getName().toLowerCase()));
+
+/////
+function loadAdditionalQueensFromCSV(path, callback) {
+    fetch(path)
+        .then(response => response.text())
+        .then(csvText => {
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    results.data.forEach(row => {
+                        let q = new Queen(
+                            row.Name,
+                            parseInt(row.Stat1),
+                            parseInt(row.Stat2),
+                            parseInt(row.Stat3),
+                            parseInt(row.Stat4),
+                            parseInt(row.Stat5),
+                            parseInt(row.Stat6),
+                            parseInt(row.Stat7),
+                            row.ShortName
+                        );
+                        allQueens.push(q);
+                    });
+                    if (callback) callback();
+                }
+            });
+        })
+        .catch(err => {
+            console.error("Failed to load CSV queens:", err);
+            if (callback) callback(); // still run callback even if CSV fails
+        });
+}
+
+/////
+// Load CSV-based queens after hardcoded ones are added
+loadAdditionalQueensFromCSV("contestants.csv", function() {
+    // Once everything is loaded, start the simulation
+    startSimulation(); // replace with your actual entry point
+});
+
+////
+
 let allQueensCopy = [];
 let allQueensCopy2 = [];
 let randomReturn = false;
@@ -14476,7 +14519,7 @@ function moreKweens() {
     let button = document.getElementById("randomK");
     let button1 = document.getElementById("moreK");
     let button2 = document.getElementById("randomKC");
-    if (currentCast.length < 20) {
+    if (currentCast.length < 100) {
         button.classList.toggle("hide", false);
         button1.classList.toggle("hide", true);
         button2.classList.toggle("hide", false);
@@ -14543,10 +14586,10 @@ queenCardContainer.addEventListener("click", e => {
         resetSearch();
         let button = document.getElementById("randomK");
         let button1 = document.getElementById("moreK");
-        if (currentCast.length == 20) {
+        if (currentCast.length == 100) {
             searchInput.setAttribute("readonly", true);
             searchInput.removeAttribute("placeholder");
-            searchInput.setAttribute("placeholder", "You can't choose more than 20 contestants");
+            searchInput.setAttribute("placeholder", "You can't choose more than 100 contestants");
             button.classList.toggle("hide", true);
             button1.classList.toggle("hide", false);
         }
@@ -14659,10 +14702,10 @@ function addRandomContestant() {
     }
     currentCast.push(randomContestant);
     updateCast();
-    if (currentCast.length >= 20) {
+    if (currentCast.length >= 100) {
         searchInput.setAttribute("readonly", true);
         searchInput.removeAttribute("placeholder");
-        searchInput.setAttribute("placeholder", "You can't choose more than 20 contestants");
+        searchInput.setAttribute("placeholder", "You can't choose more than 100 contestants");
         button.classList.toggle("hide", true);
         button1.classList.toggle("hide", false);
         button2.classList.toggle("hide", true);
@@ -14686,10 +14729,10 @@ function addRandomCustomContestant() {
     }
     currentCast.push(randomContestant);
     updateCast();
-    if (currentCast.length >= 20) {
+    if (currentCast.length >= 100) {
         searchInput.setAttribute("readonly", true);
         searchInput.removeAttribute("placeholder");
-        searchInput.setAttribute("placeholder", "You can't choose more than 20 contestants");
+        searchInput.setAttribute("placeholder", "You can't choose more than 100 contestants");
         button.classList.toggle("hide", true);
         button1.classList.toggle("hide", false);
         button2.classList.toggle("hide", true);
